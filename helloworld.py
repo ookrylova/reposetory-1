@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 with st.echo(code_location='below'):
     """
-    ## мой dataset movies
+    # датасет movies (с ресурса data.world, загружен пользователем jamesgaskin)
     """
 
     @st.cache
@@ -23,7 +23,8 @@ with st.echo(code_location='below'):
     df = get_data()
     new_order =df.groupby(by=["genre"])["runtime"].median().iloc[::-1].index
     """
-    # fig.1 зависимость длинны фильма отжанра
+    ##  библиотека seaborn. 
+    ### рис. 1 зависимость длинны фильма отжанра
     """
     fig, ax = plt.subplots()
     sns.violinplot(x='genre', y='runtime', data=df, order=new_order)
@@ -32,17 +33,39 @@ with st.echo(code_location='below'):
     st.pyplot(fig)
 
     """
-    ## столбики показывают связь бюджета и разрешенности детям
+    ### mpaa_rating - это степень запрещенности фильмадетям  
+
+привожу     расшифровку названий  степеней запрета: G – General Audiences
+All ages admitted. Nothing that would offend parents for viewing by children.
+PG – Parental Guidance Suggested
+Some material may not be suitable for children. Parents urged to give "parental guidance". May contain some material parents might not like for their young children.
+PG-13 – Parents Strongly Cautioned
+Some material may be inappropriate for children under 13. Parents are urged to be cautious. Some material may be inappropriate for pre-teenagers.
+R – Restricted
+Under 17 requires accompanying parent or adult guardian. Contains some adult material. Parents are urged to learn more about the film before taking their young children with them.
+NC-17 – Adults Only.  
+рисунок 2
     """
+    sns.set(rc={'axes.facecolor': 'lightblue', 'figure.facecolor': 'lightgreen'})
     fig, ax = plt.subplots()
     sns.barplot(x="budget", y="mpaa_rating", data=df)
+    plt.title("связь бюджета с категорией запрещен детям")
     st.pyplot(fig)
 
     """
-        ## альтаир
+    рисунок 3
     """
 
-    fig1 = alt.Chart(df).mark_point().encode(x='budget', y='runtime', color='genre',
+    fig, ax = plt.subplots()
+    sns.histplot(data=df, x='mpaa_rating', y='rating', cbar=True)
+    plt.title("успешность фильма в зависимости от категории запрещен детям")
+    st.pyplot(fig)
+
+    """
+        ## библиотека альтаир
+    """
+
+    fig1 = alt.Chart(df).mark_point().encode(x='budget', y='runtime', color=alt.Color('genre', legend=alt.Legend(title="genre by color")),
                                         tooltip=['release_date', 'budget']).interactive()
 
     st.altair_chart(
