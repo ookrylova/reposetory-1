@@ -14,7 +14,7 @@ with st.echo(code_location='below'):
     @st.cache
     def get_data():
         data_url = (
-        "https://raw.githubusercontent.com/ookrylova/reposetory-1/"
+        "https://raw.githubusercontent.com/studenteconomist/reposetory-1/"
         "master/movies.csv"
         )
         return (
